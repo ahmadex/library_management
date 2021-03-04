@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>Welcom Student</h4>
+<div class='row'>
+    <div class='col-md-2'>
+        <div class="media align-items-center py-3 mb-3">
+            <img src="{{book.cover_page.url}}" class="" style='width:200px;'>
+            <div class="media-body ml-4">
+            <div class="text-muted mb-2">ID: {{book.id}}</div>
+            {% if user.is_staff %}
+                <a href="{% url 'library:book_update' book.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+                <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
+
+                <a id='delete' href="{% url 'library:book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>&nbsp;
+                <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class='col' style='margin-left:10%; margin-top:20px;'>
+        <div class="card mb-4">
+            <div class="card-body">
+            <table class="table user-view-table m-0">
+                <tbody>
+                <tr>
+                    <td>Author:</td>
+                    <td>{{book.author}}</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>{{book.title}}</td>
+                </tr>
+                <tr>
+                    <td>Genre</td>
+                    <td><span class="badge badge-outline-success"></span>{{book.category}}</td>
+                </tr>
+                <tr>
+                    <td>Available Copies:</td>
+                    <td>{{book.available_copy}}</td>
+                </tr>
+                <tr>
+                    <td>No of Copies</td>
+                    <td><span class="badge badge-outline-success"></span>{{book.no_of_copy}}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <hr class="border-light m-0">
+            <div class="table-responsive">
+            <table class="table card-table m-0">
+                <tbody>
+                <tr>
+                    <th>Desription</th>
+                </tr>
+                <tr>
+                    <td>{{book.description|slice:150}}</td>
+                </tr>
+                
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

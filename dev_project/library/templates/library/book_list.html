@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+{% load static %}
+    
+    {% block content %}
+
+<br>
+<div class="container">
+    
+<table class="table student-list">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Description</th>
+      <th scope="col">No of Count</th>
+      <th scope="col">Available Count</th>
+      {% comment %} <th scope="col">Profile Pic</th> {% endcomment %}
+
+    </tr>
+  </thead>
+  
+<tbody>
+    {% for book in books %}
+
+    <tr>
+      <th scope="row">{{book.id}}</th>
+      <th scope="row">{{book.title}}</th>
+      <td>{{book.author}}</td>
+      <td>{{book.description|slice:30}}</td>
+      <td>{{book.no_of_copy}}</td>
+      <td>{{book.available_copy}}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+    {% endblock %}

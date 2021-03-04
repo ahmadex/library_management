@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<center><h2>Login Page</h2></center>
+
+<form action="{% url 'library:user_login'%}" method="post">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger">
+            <strong>{{ message }}!</strong> 
+        </div>
+    {% endfor %}
+{% endif %}
+
+{{form|crispy}}
+{% csrf_token %}
+<br>
+<input class='btn btn-success' type='Submit' name='Submit', value='Login'>
+</form>
+
+{% endblock %}

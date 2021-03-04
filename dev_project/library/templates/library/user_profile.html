@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4>Welcom Student</h4>
+  <div class="media align-items-center py-3 mb-3">
+    {% if user.profile_pic %}
+    <img src="{{user.profile_pic.url}}" alt="" class="d-block ui-w-100 rounded-circle">
+    {% endif %}
+    <div class="media-body ml-4">
+      <h4 class="font-weight-bold mb-0" style='color:white;'>{{user.first_name|title}} <span class="text-muted font-weight-normal">@{{user.username}}</span></h4>
+      <div class="text-muted mb-2">ID: {{user.id}}</div>
+      {% comment %} <a href="{% url 'library:student_update' student.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp; {% endcomment %}
+      <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <table class="table user-view-table m-0">
+        <tbody>
+          <tr>
+            <td>Contact No:</td>
+            <td>{{user.phone_no}}</td>
+          </tr>
+          <tr>
+            <td>Date Joined:</td>
+            <td>{{user.date_joined}}</td>
+          </tr>
+          <tr>
+            <td>Verified:</td>
+            <td><span class="fa fa-check text-primary"></span>&nbsp; Yes</td>
+          </tr>
+          <tr>
+            <td>Role:</td>
+            <td>{{user.role}}</td>
+          </tr>
+          <tr>
+            <td>Status:</td>
+            <td><span class="badge badge-outline-success"></span>Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <hr class="border-light m-0">
+    <div class="table-responsive">
+      <table class="table card-table m-0">
+        <tbody>
+          <tr>
+            <th>Department</th>
+          </tr>
+          <tr>
+            <td>{{user.department}}</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+{% endblock %}

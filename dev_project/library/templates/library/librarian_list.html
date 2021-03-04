@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{% load static %}
+    
+    {% block content %}
+
+<br>
+<div class="container">
+    
+<table class="table student-list">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Contact</th>
+      {% comment %} <th scope="col">Profile Pic</th> {% endcomment %}
+
+    </tr>
+  </thead>
+  
+<tbody>
+    {% for lib in librarians %}
+
+    <tr>
+      <td>{{lib.user.id}}</td>
+      <td><a href="{%url 'library:profile' lib.user.id%}">{{lib.user.username}}</td>
+      <td>{{lib.user.first_name}}</td>
+      <td>{{lib.user.last_name}}</td>
+      <td>{{lib.user.phone_no}}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+    {% endblock %}

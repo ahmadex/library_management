@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h1> Welcome @{{request.user}}</h1>
+    <br>
+    <div class = 'row'>
+    <div class='col-md-3'>
+        <div class="container">
+            <a href="{% url 'library:student_list'%}">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Students</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+            <a href="{% url 'library:faculty_list'%}">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Faculty</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+            <a href="{% url 'library:librarian_list'%}">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Librarian</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+            <a href="{% url 'library:book_list'%}">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/books.png'%}" alt="Card image" style="width:63%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <h4 class="card-title">Book</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
