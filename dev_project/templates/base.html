@@ -67,37 +67,14 @@
     <script src="{%static 'js/jquery.js'%}"></script>
     
     </body>
-    {% comment %} 
+    <script type='text/javascript'>
             $(document).on('submit','#bookform',function(e){
-                e.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '',
-                    data:{
-                        title:$('#id_title').val(),
-                        category:$('#id_category').val(),
-                        author:$('#id_author').val(),
-                        description: $('#id_description').val(),
-                        no_of_copy: $('#id_no_of_copy').val(),
-                        available_copy: $('#id_available_copy').val(),
-                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-                    },   
-                    succes:function(){
-                        
-                    }
-
-                });
-            }) {% endcomment %}
-    
-    <script type='text/javascript'>  
-        
-        $(document).on('submit','#bookupdateform',function(e){
             e.preventDefault();
             $form = $(this)
             var formData = new FormData(this);
             $.ajax({
                 url: '',
-                type: 'PUT',
+                type: 'POST',
                 data: formData,
                 success: function (response) {
                     $('.error').remove();
@@ -109,16 +86,14 @@
                         })
                     }
                     else{
-                        {% comment %} alert(response.message)
-                        window.location = "" {% endcomment %}
+                       
                     }
                 },
                 cache: false,
                 contentType: false,
                 processData: false
             });
-        });
-        
+        });      
         </script>
 
     

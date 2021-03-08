@@ -9,9 +9,11 @@
     <div class="col-md-3">
         <div class="ibox">
             <div class="ibox-content product-box">
+                {% if book.cover_page%}
                 <div class="card-img-top">
                     <img src="{{book.cover_page.url}}"class="d-block ui-w-100">
                 </div>
+                {% endif %}
                 <div class="product-desc">
                     <span class="product-price">
                         Available
