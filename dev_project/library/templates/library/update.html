@@ -1,0 +1,35 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block head %}
+   
+{% endblock %}    
+    {% block content %}
+        <div class='heading'style='margin-top:100px;'>
+            <center><h1 id='ab'>Welcome</h1></center>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success">
+                        <strong>{{ message }}!</strong> 
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class='jumbotron container' style='width:60%;'>
+            <form class='form1' name='signin' method='post' enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{userform.first_name|as_crispy_field}}
+                {{userform.last_name|as_crispy_field}}
+                {{userform.username|as_crispy_field}}
+                {{userform.phone_no|as_crispy_field}}
+                {{userform.profile_pic|as_crispy_field}}
+
+                {{studentform|crispy}}
+                {{facultyform|crispy}} 
+
+                    <br>
+                <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
+            </form>
+        </div>
+    {% endblock %}

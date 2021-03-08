@@ -8,7 +8,10 @@ urlpatterns = [
     path('signin/',views.Signin.as_view(),name='signin'),
     path('user_login/',views.UserLogin.as_view(), name='user_login'),
     path('profile/<str:pk>/',views.UserProfile.as_view(),name='profile'),
+
     path('add_librarian/',views.AddLibrarian.as_view(),name='add_librarian'),
+    path('user_update/<str:pk>/',views.UserUpdate.as_view(),name='user_update'),
+    path('user_delete/<str:pk>/',views.UserDelete.as_view(),name='user_delete'),
     path("user_logout/",views.UserLogout.as_view(), name='user_logout'),
     path("send_mail/",views.send_email, name='send_mail'),
     path('add_book/',views.AddBookView.as_view(), name='add_book'),

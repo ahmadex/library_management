@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h4>Welcom Student</h4>
+<h4 style='margin-top:100px;'>Welcom Student</h4>
   <div class="media align-items-center py-3 mb-3">
     {% if user.profile_pic %}
     <img src="{{user.profile_pic.url}}" alt="" class="d-block ui-w-100 rounded-circle">
@@ -9,7 +9,10 @@
     <div class="media-body ml-4">
       <h4 class="font-weight-bold mb-0" style='color:white;'>{{user.first_name|title}} <span class="text-muted font-weight-normal">@{{user.username}}</span></h4>
       <div class="text-muted mb-2">ID: {{user.id}}</div>
-      {% comment %} <a href="{% url 'library:student_update' student.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp; {% endcomment %}
+      {% if user.is_staff %}
+        <a href="{% url 'library:user_update' user.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+        <a href="{% url 'library:user_delete' user.id %}" class="btn btn-Danger btn-sm">Delete</a>&nbsp;
+      {% endif %}
       <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
     </div>
   </div>

@@ -5,11 +5,11 @@
 
   
     {% block content %}
-        <div class='heading'>
+        <div class='heading'style='margin-top:100px;'>
             <center><h1 id='ab'>Welcome To Sign-In Page</h1></center>
         </div>
         <div class='jumbotron container' style='width:60%;'>
-            <form class='form1' name='signin' method='post' enctype='multipart/form-data'>
+            <form id='bookform' class='form1' name='signin' method='post' enctype='multipart/form-data'>
                 {% csrf_token %}
                 {{bookform|crispy}}
                 {% comment %} {{bookform.author|as_crispy_field}}
@@ -21,4 +21,7 @@
                 <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
             </form>
         </div>
+
+        
 {% endblock %}
+

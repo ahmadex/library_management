@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
 from django.views import generic
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category
-from .forms import StudentForm,UserForm,FacultyForm,StaffForm,DepartmentForm,RoleForm, LibrarianForm, LoginForm, BookForm,CategoryForm
+from .forms import StudentForm,UserForm,FacultyForm,StaffForm,DepartmentForm,RoleForm, LibrarianForm, LoginForm, BookForm,CategoryForm, UserUpdateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -103,10 +104,47 @@ class Signin(View):
 
             else:
                 return render(request,'library/signin.html',{'userform': userform,'departmentform':deptform, 'roleform':roleform})
-  
+
+
+class UserUpdate(LoginRequiredMixin, View):
+    login_url = '/library/user_login/'
+
+    def get(self,request,pk):
+        user = User.objects.get(id=pk)
+        userform = UserUpdateForm(instance=user)
+
+        return render(request,'library/update.html',{'userform': userform,})
+
+    def post(self,request,pk):
+        user = User.objects.get(id=pk)
+        userform = UserUpdateForm(request.POST, request.FILES, instance=user)
+
+        if userform.is_valid():
+            user1 = userform.save(commit=False)
+            user1.save()
+            messages.success(request,'User Updated Successfully')
+            return redirect('library:user_update',pk=user1.id)
+        else:
+            return render(request,'library/signin.html',{'userform':userform})
+
+
+class UserDelete(LoginRequiredMixin, View):
+    login_url = '/library/user_login/'
+
+    def get(self,request,pk):
+        user = User.objects.get(id=pk)
+        new_role = user.role.role
+        user.delete()
+
+        if new_role == 'Student':
+            return redirect('library:student_list')
+        elif new_role == 'Faculty':
+            return redirect('library:faculty_list')
+        else:
+            return redirect('library:librarian_list')
+        
 
 class AddLibrarian(View):
-
     def get(self, request):
         userform = StaffForm()
         librarianform = LibrarianForm()
@@ -202,7 +240,6 @@ class AddBookView(LoginRequiredMixin, View):
     
     def post(self, request):
         bookform = BookForm(request.POST, request.FILES)
-
         if bookform.is_valid():
             book = bookform.save(commit=False)
             # category = bookform.cleaned_data['category']
@@ -241,13 +278,14 @@ class BookUpdateView(LoginRequiredMixin, View):
         else:
             return render(request,'library/add_book.html',{'bookform':bookform})
 
+
 class DeleteBookView(LoginRequiredMixin, View):
     login_url = '/library/user_login/'
 
     def get(self, request, pk):
         book = Book.objects.get(id=pk)
         book.delete()
-        return redirect('library:home')
+        return redirect('library:book_list')
 
 
 class AdminDashBoard(LoginRequiredMixin,View):
@@ -255,6 +293,7 @@ class AdminDashBoard(LoginRequiredMixin,View):
 
     def get(self, request):
         return render(request,'library/admin_dashboard.html')
+
 
 class StudentList(LoginRequiredMixin,View):
     login_url = '/library/user_login/'
@@ -271,6 +310,7 @@ class FacultyList(LoginRequiredMixin,View):
         facutly = Faculty.objects.all().order_by('id')
         return render(request,'library/faculty_list.html',{'faculties':facutly})
 
+
 class LibrarianList(LoginRequiredMixin,View):
     login_url = '/library/user_login/'
 
@@ -278,11 +318,10 @@ class LibrarianList(LoginRequiredMixin,View):
         librarian = Librarian.objects.all().order_by('id')
         return render(request,'library/librarian_list.html',{'librarians':librarian})
 
+
 class BookList(LoginRequiredMixin,View):
     login_url = '/library/user_login/'
 
     def get(self, request):
         book = Book.objects.all().order_by('id')
         return render(request,'library/book_list.html',{'books':book})
-
-    

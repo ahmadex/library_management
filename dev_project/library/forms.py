@@ -102,3 +102,10 @@ class BookRecordForm(forms.ModelForm):
     class Meta:
         model = BookRecord
         fields = '__all__'
+
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','username','phone_no','profile_pic')
+

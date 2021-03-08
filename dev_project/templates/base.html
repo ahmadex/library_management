@@ -5,13 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> 
     
     <link rel='stylesheet' href="{% static 'css/main.css'%}">
     {% block head %} {% endblock %}    
     </head>
     <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="navbar-inner container-fluid">
             <a class="navbar-brand" href="#">Library</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +47,7 @@
                     
                     {% if user.is_staff %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'library:add_book'%}">Add Books</a>
+                        <a class="nav-link" href="{% url 'library:admin_dashboard'%}">DashBoard</a>
                     </li>
                     {% endif %}
                     
@@ -57,10 +58,67 @@
                 </form>
             </div>
         </div>
-    </nav>        
+    </nav>       
     <div class='container'>
         {% block content %}{% endblock %}
     </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{%static 'js/main.js'%}"></script>
+    <script src="{%static 'js/jquery.js'%}"></script>
+    
     </body>
+    {% comment %} 
+            $(document).on('submit','#bookform',function(e){
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data:{
+                        title:$('#id_title').val(),
+                        category:$('#id_category').val(),
+                        author:$('#id_author').val(),
+                        description: $('#id_description').val(),
+                        no_of_copy: $('#id_no_of_copy').val(),
+                        available_copy: $('#id_available_copy').val(),
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+                    },   
+                    succes:function(){
+                        
+                    }
+
+                });
+            }) {% endcomment %}
+    
+    <script type='text/javascript'>  
+
+        $(document).on('submit','#bookform',function(e){
+            e.preventDefault();
+            $form = $(this)
+            var formData = new FormData(this);
+            $.ajax({
+                url: '',
+                type: 'POST',
+                data: formData,
+                success: function (response) {
+                    $('.error').remove();
+                    console.log(response)
+                    if(response.error){
+                        $.each(response.errors, function(name, error){
+                            error = '<small class="text-muted error">' + error + '</small>'
+                            $form.find('[name=' + name + ']').after(error);
+                        })
+                    }
+                    else{
+                        {% comment %} alert(response.message)
+                        window.location = "" {% endcomment %}
+                    }
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+        </script>
+
+    
 </html>
