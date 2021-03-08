@@ -35,7 +35,7 @@
       <td>{{book.description|slice:30}}</td>
       <td>{{book.no_of_copy}}</td>
       <td>{{book.available_copy}}</td>
-      <td><a class='btn btn-info' href="{% url 'library:book_update' book.id%}">Edit</a></td>
+      <td><a class='btn btn-info' href="{% url 'library:add_book' book.id%}">Edit</a></td>
       <td><a class='btn btn-danger' href="{% url 'library:book_delete' book.id%}">Delete</a></td>
 
     </tr>

@@ -231,12 +231,19 @@ class AddBookView(LoginRequiredMixin, View):
 
     login_url = '/library/user_login/'
 
-    def get(self, request):
-        bookform = BookForm()
-    
-        return render(request,'library/add_book.html',{
+    def get(self, request, pk=None):
+        if pk == None:
+            bookform = BookForm()
+            return render(request,'library/add_book.html',{
             'bookform': bookform,
             })
+        else:
+            book = Book.objects.get(id=pk)
+            bookform = BookForm(instance=book)
+            return render(request,'library/book_update.html',{
+            'bookform': bookform,
+            })
+
     
     def post(self, request):
         bookform = BookForm(request.POST, request.FILES)
@@ -249,6 +256,17 @@ class AddBookView(LoginRequiredMixin, View):
             return redirect('library:book_detail', pk=book.id)
         else:
             return render(request, 'library/add_book.html',{'bookform': bookform})
+
+    def put(self, request, pk):
+        book = Book.objects.get(id=pk)
+        bookform = BookForm(request.POST, request.FILES, instance=book)
+
+        if bookform.is_valid():
+            book = bookform.save(commit=False)
+            book.save()
+            return redirect('library:book_detail',pk=book.id)
+        else:
+            return render(request,'library/book_update.html',{'bookform':bookform})
 
 
 class BookDetailView(LoginRequiredMixin,View):

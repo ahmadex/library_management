@@ -90,14 +90,14 @@
             }) {% endcomment %}
     
     <script type='text/javascript'>  
-
-        $(document).on('submit','#bookform',function(e){
+        
+        $(document).on('submit','#bookupdateform',function(e){
             e.preventDefault();
             $form = $(this)
             var formData = new FormData(this);
             $.ajax({
                 url: '',
-                type: 'POST',
+                type: 'PUT',
                 data: formData,
                 success: function (response) {
                     $('.error').remove();
@@ -118,6 +118,7 @@
                 processData: false
             });
         });
+        
         </script>
 
     
