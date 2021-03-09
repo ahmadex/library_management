@@ -41,8 +41,14 @@
                 </tr>
                 <tr>
                     <td>No of Copies</td>
-                    <td> <a href="#" id='plus' class="btn btn-primary btn-sm">+</a>&nbsp;<span id='copy'>{{book.no_of_copy}}</span>&nbsp;
+                    <td> 
+                    {% if user.is_staff %}
+                    <a href="#" id='plus' class="btn btn-primary btn-sm">+</a>&nbsp;
+                    {% endif %}
+                    <span id='copy'>{{book.no_of_copy}}</span>&nbsp;
+                    {% if user.is_staff %}
                     <a href="#" id='minus' class="btn btn-primary btn-sm">-</a>
+                    {% endif %}
                     </td>
                 </tr>
                 </tbody>

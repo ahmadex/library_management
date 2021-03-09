@@ -264,7 +264,7 @@ class BookUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         book = Book.objects.get(id=pk)
         bookform = BookForm(instance=book)
-        return render(request, 'library/add_book.html',{'bookform': bookform})
+        return render(request, 'library/add_book.html',{'bookform': bookform,'books':book})
     
     def post(self, request, pk):
         book = Book.objects.get(id=pk)

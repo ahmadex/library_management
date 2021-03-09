@@ -89,8 +89,8 @@ class BookForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Title'}))
     author = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Author'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'placeholder':'Desciption'}))
-    no_of_copy = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'No of Copies'}))
-    available_copy = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Available Copies'}))
+    # no_of_copy = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'No of Copies'}))
+    # available_copy = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Available Copies'}))
 
     class Meta:
         model = Book

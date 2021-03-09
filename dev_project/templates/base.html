@@ -68,7 +68,7 @@
     
     </body>
     {% block javascript %} {% endblock %}
-    <script type='text/javascript'>
+    {% comment %} <script type='text/javascript'>
             $(document).on('submit','#bookform',function(e){
             e.preventDefault();
             $form = $(this)
@@ -94,7 +94,7 @@
                 contentType: false,
                 processData: false
             });
-        });      
+        });       {% endcomment %}
         </script>
 
     
