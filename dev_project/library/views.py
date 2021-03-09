@@ -264,7 +264,7 @@ class BookUpdateView(LoginRequiredMixin, View):
     def get(self, request, pk):
         book = Book.objects.get(id=pk)
         bookform = BookForm(instance=book)
-        return render(request, 'library/add_book.html',{'bookform': bookform,'books':book})
+        return render(request, 'library/book_update.html',{'bookform': bookform,'books':book})
     
     def post(self, request, pk):
         book = Book.objects.get(id=pk)
@@ -275,7 +275,7 @@ class BookUpdateView(LoginRequiredMixin, View):
             book.save()
             return redirect('library:book_detail',pk=book.id)
         else:
-            return render(request,'library/add_book.html',{'bookform':bookform})
+            return render(request,'library/book_update.html',{'bookform':bookform})
 
 
 class DeleteBookView(LoginRequiredMixin, View):

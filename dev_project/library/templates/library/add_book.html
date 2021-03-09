@@ -11,14 +11,14 @@
         <div class='jumbotron container' style='width:60%;'>
             <form id='bookform' class='form1' name='signin' method='post' enctype='multipart/form-data'>
                 {% csrf_token %}
-                {% comment %} {{bookform|crispy}} {% endcomment %}
-                {{bookform.title|as_crispy_field}}
+                {{bookform|crispy}}
+                {% comment %} {{bookform.title|as_crispy_field}}
                 {{bookform.category|as_crispy_field}}
                 {{bookform.author|as_crispy_field}}
                 {{bookform.description|as_crispy_field}}
                 {{bookform.no_of_copy|as_crispy_field}}
                 {{bookform.available_copy|as_crispy_field}}
-                {{bookform.cover_page|as_crispy_field}}
+                {{bookform.cover_page|as_crispy_field}} {% endcomment %}
                 <br>
                 <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
             </form>
@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block javascript %} 
-    <script type='text/javascript'>
+    {% comment %} <script type='text/javascript'>
     $(function(){
         
         let x = $('#id_no_of_copy');
@@ -80,7 +80,7 @@
             })
         });
 
-    });
+    }); {% endcomment %}
 
     </script>
 {% endblock %}
