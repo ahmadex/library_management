@@ -67,6 +67,7 @@
     <script src="{%static 'js/jquery.js'%}"></script>
     
     </body>
+    {% block javascript %} {% endblock %}
     <script type='text/javascript'>
             $(document).on('submit','#bookform',function(e){
             e.preventDefault();
