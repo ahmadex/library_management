@@ -14,6 +14,8 @@
 
                 <a id='delete' href="{% url 'library:book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>&nbsp;
                 <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
+            {% else %}
+                <a href="#" class="btn btn-outline btn-primary btn-lg">Issue</a>
             {% endif %}
             </div>
         </div>
