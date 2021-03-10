@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
-
 {% block content %}
+{% load static %}
 <h4 style='margin-top:100px;'>Welcom Student</h4>
 <div class='row'>
     <div class='col-md-2'>
         <div class="media align-items-center py-3 mb-3">
             <img src="{{book.cover_page.url}}" class="" style='width:200px;'>
             <div class="media-body ml-4">
-            <div class="text-muted mb-2">ID: {{book.id}}</div>
+            <div class="text-muted mb-2">ID:<span id='book_id'>{{book.id}}</sapn></div>
             {% if user.is_staff %}
                 <a href="{% url 'library:book_update' book.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
                 <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
@@ -37,15 +37,16 @@
                 </tr>
                 <tr>
                     <td>Available Copies:</td>
-                    <td><span id='available'>{{book.available_copy}}</span></td>
+                    <td><span id='avail'>{{book.available_copy}}</span></td>
                 </tr>
                 <tr>
                     <td>No of Copies</td>
                     <td> 
+                    <input id='copy' type='hidden' value={{csrf_token}}>
                     {% if user.is_staff %}
                     <a href="#" id='plus' class="btn btn-primary btn-sm">+</a>&nbsp;
                     {% endif %}
-                    <span id='copy'>{{book.no_of_copy}}</span>&nbsp;
+                    <span id='no_copy'>{{book.no_of_copy}}</span>&nbsp;
                     {% if user.is_staff %}
                     <a href="#" id='minus' class="btn btn-primary btn-sm">-</a>
                     {% endif %}
@@ -76,66 +77,6 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type='text/javascript'>
-    $(function(){
-        
-        //No of copies increament
-        
-        $('#plus').on('click',function(){
-            let bookId = $('.text-muted').text()
-            $.ajax({
-                url:`{% url 'library:copy_incrmt'%}`,
-                method:'POST',
-                data: {
-                    id:{{book.id}},
-                    csrfmiddlewaretoken: '{{csrf_token}}',
-                    sign: 'plus'
-                },
-                success: function(data){
-                    console.log(data.status)
-                    if(data.status == "1"){
-                        $('#copy').text(data.book_copy) 
-                        $('#available').text(data.avail)
-
-                    }
-                }
-            })
-        });
-
-
-        // no of copies decreamnet
-
-        $('#minus').on('click',function(){
-
-            if(Number($('#copy').text()) < 1){
-                alert('NO of Copies Can not be Negative')  
-                throw error('Minus Copy not valid')
-            }
-
-            let bookId = $('.text-muted').text()
-            
-            $.ajax({
-                url:`{% url 'library:copy_incrmt'%}`,
-                method:'POST',
-                data: {
-                    id:{{book.id}},
-                    csrfmiddlewaretoken: '{{csrf_token}}',
-                    sign: 'minus'
-                },
-                success: function(data){
-                    console.log(data.status)
-                    if(data.status == "1"){
-                        $('#copy').text(data.book_copy)
-                        $('#available').text(data.avail)
-                    }
-                }
-            })
-        });
-
-
-    });
-    
-
-    </script>
+    <script src="{% static 'js/copy.js'%}"></script>
 
 {% endblock %}
