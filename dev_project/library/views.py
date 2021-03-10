@@ -329,20 +329,19 @@ class BookList(LoginRequiredMixin,View):
 class CopyIncrmt(View):
 
     def post(self,request):
-        pk = request.POST.get('id')        
+        pk = request.POST.get('id') 
+        sign = request.POST.get('sign')       
         book = Book.objects.get(id=pk)
-        book.no_of_copy += 1
-        book.available_copy += 1
+
+        if sign == 'plus':
+            book.no_of_copy += 1
+            book.available_copy += 1
+        else:
+            book.no_of_copy -= 1
+            book.available_copy -= 1
+        
         book.save()
         return JsonResponse({'status':1, 'book_copy':book.no_of_copy,'avail':book.available_copy})
 
-class CopyDcrmt(View):
 
-    def post(self,request):
-        pk = request.POST.get('id')        
-        book = Book.objects.get(id=pk)
-        book.no_of_copy -= 1
-        book.available_copy -= 1
-        book.save()
-        return JsonResponse({'status':1, 'book_copy':book.no_of_copy, 'avail':book.available_copy})
     

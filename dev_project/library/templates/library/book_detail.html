@@ -83,13 +83,13 @@
         
         $('#plus').on('click',function(){
             let bookId = $('.text-muted').text()
-            
             $.ajax({
                 url:`{% url 'library:copy_incrmt'%}`,
                 method:'POST',
                 data: {
                     id:{{book.id}},
                     csrfmiddlewaretoken: '{{csrf_token}}',
+                    sign: 'plus'
                 },
                 success: function(data){
                     console.log(data.status)
@@ -106,14 +106,21 @@
         // no of copies decreamnet
 
         $('#minus').on('click',function(){
+
+            if(Number($('#copy').text()) < 1){
+                alert('NO of Copies Can not be Negative')  
+                throw error('Minus Copy not valid')
+            }
+
             let bookId = $('.text-muted').text()
             
             $.ajax({
-                url:`{% url 'library:copy_dcrmt'%}`,
+                url:`{% url 'library:copy_incrmt'%}`,
                 method:'POST',
                 data: {
                     id:{{book.id}},
                     csrfmiddlewaretoken: '{{csrf_token}}',
+                    sign: 'minus'
                 },
                 success: function(data){
                     console.log(data.status)

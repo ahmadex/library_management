@@ -24,7 +24,6 @@ urlpatterns = [
     path('librarian_list/',views.LibrarianList.as_view(), name='librarian_list'),
     path('book_list/',views.BookList.as_view(), name='book_list'),
     path('copy_incrmt/',views.CopyIncrmt.as_view(), name='copy_incrmt'),
-    path('copy_dcrmt/',views.CopyDcrmt.as_view(), name='copy_dcrmt'),
 
 
 
