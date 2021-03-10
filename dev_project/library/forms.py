@@ -3,28 +3,6 @@ from .models import Student,Faculty,Librarian,Book,BookRecord,Admin,Role,User,De
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-class DepartmentForm(forms.ModelForm):
-    CHOICES = (('Computer', 'Computer'),
-                ('IT', 'IT'),
-                ('Mechanical','Mechanical'),
-                ('Civil','Civil'),
-                ('Electrical','Electrical'),
-                ('Environmental','Environmental')
-                )
-    department = forms.ChoiceField(choices=CHOICES,)
-    class Meta:
-        model = Department
-        fields = '__all__'
-
-
-class RoleForm(forms.ModelForm):
-
-    CHOICES = (('Student', 'Student'),('Faculty', 'Faculty'),)
-    role = forms.ChoiceField(choices=CHOICES,)
-    class Meta:
-        model = Role
-        fields = ('role',)
-
 
 class UserForm(UserCreationForm):
 
@@ -37,7 +15,7 @@ class UserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name','last_name','phone_no','username','password1','password2','profile_pic')
+        fields = ('role','department','first_name','last_name','phone_no','username','password1','password2','profile_pic')
 
 
 class StudentForm(forms.ModelForm):
@@ -77,12 +55,6 @@ class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'password'}))
 
-
-class CategoryForm(forms.ModelForm):
-
-    class Meta:
-        model = Category
-        fields = '__all__'
 
 class BookForm(forms.ModelForm):
 

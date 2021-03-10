@@ -4,7 +4,7 @@ from django.views import View
 from django.views import generic
 from django.http import HttpResponse, JsonResponse
 from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category
-from .forms import StudentForm,UserForm,FacultyForm,StaffForm,DepartmentForm,RoleForm, LibrarianForm, LoginForm, BookForm,CategoryForm, UserUpdateForm
+from .forms import StudentForm,UserForm,FacultyForm,StaffForm,LibrarianForm, LoginForm, BookForm,UserUpdateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -52,58 +52,39 @@ class HomeView(View):
 class Signin(View):
 
     def get(self, request):
-        roleform = RoleForm()
         userform = UserForm()
         studentform = StudentForm()
-        departmentform = DepartmentForm()
         facultyform = FacultyForm()
         
         return render(request,'library/signin.html',{
             'userform': userform, 
             'studentform': studentform, 
-            'departmentform': departmentform, 
-            'roleform': roleform,
             'facultyform': facultyform,
             })
    
     def post(self, request):
 
         user_role = {
-            'Student': StudentForm(request.POST),
-            'Faculty': FacultyForm(request.POST)
+            '1': StudentForm(request.POST),
+            '2': FacultyForm(request.POST)
             }
         
-        roleform = RoleForm(request.POST)
-        
-        if roleform.is_valid():
-            temp_role = roleform.cleaned_data['role']
-            usertype = user_role.get(temp_role)
-            
-            userform = UserForm(request.POST, request.FILES)
-            deptform = DepartmentForm(request.POST)
+        temp_role = request.POST.get('role')
+        usertype = user_role.get(temp_role)
+        userform = UserForm(request.POST, request.FILES)
 
-            if userform.is_valid() and usertype.is_valid():
+        if userform.is_valid() and usertype.is_valid():
+            user = userform.save(commit=False)
+            user.save()
+            new_user = usertype.save(commit=False)
+            new_user.user = user
+            new_user.save()
+            # login user
+            login(request, user)
+            return redirect('library:profile', pk=user.id)
 
-                # saving user with department
-                user = userform.save(commit=False)
-                # department and Role saved
-                dept = deptform.save(commit=False)
-
-                dept1 = Department.objects.get(department=dept)
-                user.department = dept1
-                role1 = Role.objects.get(role=temp_role)
-                user.role = role1
-                user.save()
-
-                new_user = usertype.save(commit=False)
-                new_user.user = user
-                new_user.save()
-                # login user
-                login(request, user)
-                return redirect('library:profile', pk=user.id)
-
-            else:
-                return render(request,'library/signin.html',{'userform': userform,'departmentform':deptform, 'roleform':roleform})
+        else:
+            return render(request,'library/signin.html',{'userform': userform})
 
 
 class UserUpdate(LoginRequiredMixin, View):
