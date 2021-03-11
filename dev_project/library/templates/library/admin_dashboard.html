@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <h1 style='margin-top:100px;'> Welcome @{{request.user}}</h1>
+    <br>
+    <div class = 'row'>
+    <div class='col-md-3'>
+        <div class="container">
+            
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <a class='btn btn-primary'href="{% url 'library:student_list'%}">Students</a>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <a class='btn btn-primary' href="{% url 'library:faculty_list'%}"> Faculty</a>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/default.png'%}" alt="Card image" style="width:80%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                     <a class='btn btn-primary' href="{% url 'library:librarian_list'%}">Librarian</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class='col-md-3'>
+        <div class="container">
+                <div class="card" style="width:200px">
+                    <img class="card-img-top" src="{% static 'images/books.png'%}" alt="Card image" style="width:63%; margin-top:10px; margin-left:20px;">
+                    <div class="card-body">
+                        <a class='btn btn-primary' href="{% url 'library:book_list'%}">Book</a>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block head %}
+   
+{% endblock %}    
+    {% block content %}
+        <div class='heading'style='margin-top:100px;'>
+            <center><h1>Welcome To Sign-In Page</h1></center>
+        </div>
+        <div class='jumbotron container' style='width:60%;'>
+            <form id='form2' method='post'>  
+                {% csrf_token %}
+            </form>
+
+            <form class='form1' name='signin' method='post' enctype='multipart/form-data'>
+                {% csrf_token %}
+
+                {{userform.first_name|as_crispy_field}}
+                {{userform.last_name|as_crispy_field}}
+                {{userform.phone_no|as_crispy_field}}
+                {{userform.username|as_crispy_field}}
+                {{userform.password1|as_crispy_field}}
+                {{userform.password2|as_crispy_field}}
+                {{userform.profile_pic|as_crispy_field}}
+
+
+                {{librarianform|crispy}}
+                <br>
+                <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
+            </form>
+        </div>
+    {% endblock %}

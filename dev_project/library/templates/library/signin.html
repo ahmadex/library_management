@@ -1,0 +1,117 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block head %}
+   
+{% endblock %}    
+    {% block content %}
+        <div class='heading' style='margin-top:100px;'>
+            <center><h1 id='ab'>Welcome To Sign-In Page</h1></center>
+        </div>
+        <div class='jumbotron container' style='width:60%;'>
+            <form id='form2' method='post'>  
+                {% csrf_token %}
+            </form>
+
+            <form class='form1' name='signin' method='post' enctype='multipart/form-data'>
+                {% csrf_token %}
+                {{roleform|crispy}}
+                {{departmentform|crispy}}
+                {{userform|crispy}}
+                {{studentform|crispy}}
+                {{facultyform|crispy}} 
+
+                {% comment %} <div class="form-row">
+                <div class="form-group">
+                    <label for="sel1">Signin As:</label>
+                    
+                    <select class="form-control" id="sel1" name='role'>
+                        <option>Student</option>
+                        <option>Faculty</option>
+                        <option>Librarian</option>
+                    </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                <div class = 'form-group'>
+                <label for="sel1">Department:</label>
+                <select class="form-control" name='department'>
+                    <option value="Student">Computer</option>
+                    <option value="Faculty">IT</option>
+                    <option value="Librarian">Mechanical</option>
+                    <option value="Librarian">Civil</option>
+                    <option value="Librarian">Electrical</option>
+                    <option value="Librarian">Environmental</option>
+                </select>
+                </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                    <label for="inputEmail4">FirstName</label>
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="FirstName" name='first_name'>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                    <label for="inputEmail4">LastName</label>
+                    <input type="text" class="form-control" id="inputEmail4" placeholder="LastName" name='lastname'>
+                    </div>
+
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">UserName</label>
+                        <input type="text" class="form-control" id="inputEmail4" placeholder="Username" name='username'>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">Password</label>
+                        <input type="password" class="form-control" id="inputPassword4" placeholder="Password" name='password'>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                     <label for="inputEmail4">Contact No.</label>
+                        <input type="number" class="form-control" id="inputEmail4" placeholder="Phone Number" name='phone_no'>
+                </div>
+
+                <div class="form-row">
+                    <input type="file" name="profile_pic" accept="image/*" class="clearablefileinput form-control-file" id="id_profile_pic" name='profile_pic'>
+                </div>
+                
+                 {% endcomment %}
+                
+                   
+                {% comment %} {% if roleform.role.value == 'Faculty'%}
+                    {{departmentform|crispy}}
+                    {{userform|crispy}}
+                    {{facultyform|crispy}}
+
+                {% elif roleform.role.value == 'Student'%}
+                    {{departmentform|crispy}}
+                    {{userform|crispy}}
+                    {{studentform|crispy}} 
+                    
+                {% elif roleform.role.value == 'Librarian' %}
+                    {{userform.first_name|as_crispy_field }}
+                    {{userform.last_name|as_crispy_field}}
+                    {{userform.phone_no|as_crispy_field }}
+                    {{userform.username|as_crispy_field }}
+                    {{userform.password|as_crispy_field }}
+                    {{userform.profile_pic|as_crispy_field}}
+                    {{libraryform|crispy}}
+                {% endif %} {% endcomment %}
+                <br>
+                <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
+            </form>
+        </div>
+    {% endblock %}
+
+    {% block javascript %}
+    <script type='text/javascript'>
+        $(function(){
+            let role = $('#id_role').children()[3]
+            role.remove();
+        });
+    </script>
+    {% endblock javascript %}

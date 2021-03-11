@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% load static %}
+    
+{% block content %}
+
+
+<div class='container' style="margin-top:100px;">
+  <a class="btn btn-primary" href="{% url 'library:signin'%}">Add Faculty +</a>
+</div>
+
+<div class="container" style='margin-top:20px;'>
+<table class="table student-list">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Username</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Department</th>
+      <th scope="col">Contact</th>
+      <th scope="col">Update</th>
+      <th scope="col">Delete</th>
+
+
+    </tr>
+  </thead>
+  
+<tbody>
+    {% for fac in faculties %}
+
+    <tr>
+      <td>{{fac.user.id}}</td>
+      <td><a href="{%url 'library:profile' fac.user.id%}">{{fac.user.username}}</td>
+      <td>{{fac.user.first_name}}</td>
+      <td>{{fac.user.last_name}}</td>
+      <td>{{fac.user.department}}</td>
+      <td>{{fac.user.phone_no}}</td>
+      <td><a class='btn btn-info' href="{% url 'library:user_update' fac.user.id%}">Edit</a></td>
+      <td><a class='btn btn-danger' href="{% url 'library:user_delete' fac.user.id%}">Delete</a></td>
+
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+    {% endblock %}
