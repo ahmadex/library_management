@@ -106,3 +106,13 @@
             </form>
         </div>
     {% endblock %}
+
+{% block javascript %}
+    <script type='text/javascript'>
+        $(function(){
+            let role = $('#id_role').children()[3]
+            role.remove();
+        });
+        
+    </script>
+{% endblock javascript %}

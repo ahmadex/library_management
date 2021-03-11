@@ -338,9 +338,9 @@ class BookIssue(View):
             Q(return_date=None)
             )
         # check if user has issued book more than 3 or not
-        if all_user_records.count() > 3:
+        if all_user_records.count() > 2:
             print('Can NOt Issue Book More Than 3')
-            return JsonResponse({'status':2,'msg':'You Can Not Assue Book More than 3'})
+            return JsonResponse({'status':2,'msg':'You Can Not Issue Book More than 3'})
         
         record = BookRecord.objects.create(book=book,user=user)
         record.book_due_date()
