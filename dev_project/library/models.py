@@ -101,10 +101,10 @@ class BookRecord(models.Model):
   user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
   issue_date = models.DateField(auto_now_add=True,blank=True, null=True)
   due_date = models.DateField(default=None,blank=True, null=True)
-  return_date = models.DateField(auto_now_add=True,blank=True, null=True)
+  return_date = models.DateField(default=None,blank=True, null=True)
   
   def __str__(self):
-    return self.book_name
+    return self.book.title
 
   def book_due_date(self):
     self.due_date = self.issue_date + datetime.timedelta(days=10)

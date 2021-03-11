@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views import generic
 from django.http import HttpResponse, JsonResponse
-from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category
+from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category,BookRecord
 from .forms import StudentForm,UserForm,FacultyForm,LibrarianForm, LoginForm, BookForm, UserUpdateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
@@ -307,3 +307,28 @@ class BookList(LoginRequiredMixin,View):
     def get(self, request):
         book = Book.objects.all().order_by('id')
         return render(request,'library/book_list.html',{'books':book})
+
+
+class BookIssue(View):
+
+    def post(self, request):
+        user_pk = request.POST.get('user_id')
+        book_pk = request.POST.get('book_id')
+        user = User.objects.get(id=user_pk)
+        book = Book.objects.get(id=book_pk)
+        
+        record = BookRecord.objects.create(book=book,user=user)
+        record.book_due_date()
+        record.save()
+        
+        book.available_copy -= 1
+        book.save()
+        
+        return JsonResponse({'book':book.title,'user':user.username,'avail':book.available_copy})
+
+
+class BookRecords(View):
+
+    def get(self, request):
+        book = BookRecord.objects.all()[::-1]
+        return render(request,'library/book_records.html',{'books':book})

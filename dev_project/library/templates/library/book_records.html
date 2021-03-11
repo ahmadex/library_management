@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+{% load static %}
+    
+{% block content %}
+    <br>
+
+
+<div class="container" style='margin-top:100px;'>
+    
+<table class="table student-list">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">User</th>
+      <th scope="col">Issue Date</th>
+      <th scope="col">Due Date</th>
+      <th scope="col">Return Date</th>
+    </tr>
+  </thead>
+  
+<tbody>
+    {% for book in books %}
+
+    <tr>
+      <td>{{book.id}}</td>
+      <td>{{book.book.title}}</td>
+      <td>{{book.user}}</td>
+      <td>{{book.issue_date}}</td>
+      <td>{{book.due_date}}</td>
+      <td>{{book.return_date}}</td>
+     
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
