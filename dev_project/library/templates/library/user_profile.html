@@ -41,24 +41,37 @@
             <td>Status:</td>
             <td><span class="badge badge-outline-success"></span>Active</td>
           </tr>
+          <tr>
+            <td>Department:</td>
+            <td><span class="badge badge-outline-success"></span>{{user.department}}</td>
+          </tr>
+
         </tbody>
       </table>
     </div>
     <hr class="border-light m-0">
-    <div class="table-responsive">
-      <table class="table card-table m-0">
-        <tbody>
-          <tr>
-            <th>Department</th>
+    <br>
+      {% if user.role.role == 'Student' or user.role.role == 'Faculty' %}
+        <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Issue Date</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody>  
+          {% for books in user_books_issued %}
+          <tr><td>{{books.book.title}}</td>
+              <td>{{books.issue_date}}</td>
+              <td>{{books.due_date}}</td>
           </tr>
-          <tr>
-            <td>{{user.department}}</td>
-          </tr>
-          
-        </tbody>
-      </table>
-    </div>
+          {% endfor %}
+        {% endif %}  
+      </tbody>
+    </table> 
   </div>
+</div>
 
 
 {% endblock %}

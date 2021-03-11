@@ -13,6 +13,7 @@ from dev_project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 import smtplib
+from django.db.models import Q
 # Create your views here.
 
 
@@ -170,7 +171,11 @@ class UserProfile(LoginRequiredMixin,View):
     
     def get(self, request, pk):
         user = User.objects.get(id=pk)
-        return render(request, 'library/user_profile.html',{'user':user})
+        user_books_issued = BookRecord.objects.filter(
+            Q(user__username__iexact=user.username) &
+            Q(return_date=None)
+            )
+        return render(request, 'library/user_profile.html',{'user':user,'user_books_issued':user_books_issued})
 
 
 class UserLogin(View):
@@ -317,14 +322,33 @@ class BookIssue(View):
         user = User.objects.get(id=user_pk)
         book = Book.objects.get(id=book_pk)
         
+        # getting all the records from BookRecord for requested book
+        all_book_records = BookRecord.objects.filter(book__title__iexact=book.title)
+        
+        # check if current_user with requested Book is already in BookRecords or Not
+        # or check if book title is occupied by any other user 
+        for current_user in all_book_records: 
+            if current_user.user.username == user.username and current_user.return_date == None:
+                print('Book Already Issued')
+                return JsonResponse({'status':0, 'msg':'Book Already Issued by You'}) 
+        
+        # getting all the user from BookRecord for current user
+        all_user_records = BookRecord.objects.filter(
+            Q(user__username__iexact=user.username) &
+            Q(return_date=None)
+            )
+        # check if user has issued book more than 3 or not
+        if all_user_records.count() > 3:
+            print('Can NOt Issue Book More Than 3')
+            return JsonResponse({'status':2,'msg':'You Can Not Assue Book More than 3'})
+        
         record = BookRecord.objects.create(book=book,user=user)
         record.book_due_date()
         record.save()
-        
         book.available_copy -= 1
         book.save()
-        
-        return JsonResponse({'book':book.title,'user':user.username,'avail':book.available_copy})
+
+        return JsonResponse({'status':1,'book':book.title,'user':user.username,'avail':book.available_copy})
 
 
 class BookRecords(View):
