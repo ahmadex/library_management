@@ -1,77 +1,84 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<h4 style='margin-top:100px;'>Welcom Student</h4>
+  <h4 style='margin-top:100px;'>Welcom Student</h4>
   <div class="media align-items-center py-3 mb-3">
     {% if user.profile_pic %}
-    <img src="{{user.profile_pic.url}}" alt="" class="d-block ui-w-100 rounded-circle">
+      <img src="{{user.profile_pic.url}}" alt="" class="d-block ui-w-100 rounded-circle">
     {% endif %}
+    <input type='hidden' value={{csrf_token}} id='csr'>
     <div class="media-body ml-4">
-      <h4 class="font-weight-bold mb-0" style='color:white;'>{{user.first_name|title}} <span class="text-muted font-weight-normal">@{{user.username}}</span></h4>
-      <div class="text-muted mb-2">ID: {{user.id}}</div>
-      {% if user.is_staff %}
-        <a href="{% url 'library:user_update' user.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
-        <a href="{% url 'library:user_delete' user.id %}" class="btn btn-Danger btn-sm">Delete</a>&nbsp;
-      {% endif %}
-      <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
+      <h4 class="font-weight-bold mb-0" style='color:white;'>{{user.first_name|title}} <span id='username' class="text-muted font-weight-normal">{{user.username}}</span></h4>
+      <div class="text-muted mb-2">ID:<span id='uid'> {{user.id}}</span></div>
+        {% if user.is_staff %}
+          <a href="{% url 'library:user_update' user.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+          <a href="{% url 'library:user_delete' user.id %}" class="btn btn-Danger btn-sm">Delete</a>&nbsp;
+        {% endif %}
+      </div>
     </div>
-  </div>
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <table class="table user-view-table m-0">
-        <tbody>
-          <tr>
-            <td>Contact No:</td>
-            <td>{{user.phone_no}}</td>
-          </tr>
-          <tr>
-            <td>Date Joined:</td>
-            <td>{{user.date_joined}}</td>
-          </tr>
-          <tr>
-            <td>Verified:</td>
-            <td><span class="fa fa-check text-primary"></span>&nbsp; Yes</td>
-          </tr>
-          <tr>
-            <td>Role:</td>
-            <td>{{user.role}}</td>
-          </tr>
-          <tr>
-            <td>Status:</td>
-            <td><span class="badge badge-outline-success"></span>Active</td>
-          </tr>
-          <tr>
-            <td>Department:</td>
-            <td><span class="badge badge-outline-success"></span>{{user.department}}</td>
-          </tr>
+    <div class="card mb-4">
+      <div class="card-body">
+        <table class="table user-view-table m-0">
+          <tbody>
+            <tr>
+              <td>Contact No:</td>
+              <td>{{user.phone_no}}</td>
+            </tr>
+            <tr>
+              <td>Date Joined:</td>
+              <td>{{user.date_joined}}</td>
+            </tr>
+            <tr>
+              <td>Verified:</td>
+              <td><span class="fa fa-check text-primary"></span>&nbsp; Yes</td>
+            </tr>
+            <tr>
+              <td>Role:</td>
+              <td>{{user.role}}</td>
+            </tr>
+            <tr>
+              <td>Status:</td>
+              <td><span class="badge badge-outline-success"></span>Active</td>
+            </tr>
+            <tr>
+              <td>Department:</td>
+              <td><span class="badge badge-outline-success"></span>{{user.department}}</td>
+            </tr>
 
-        </tbody>
-      </table>
-    </div>
-    <hr class="border-light m-0">
-    <br>
+          </tbody>
+        </table>
+      </div>
+      <hr class="border-light m-0">
+    </div> 
+    
+    <div class='container' style="background-color:#f6f6f6">
       {% if user.role.role == 'Student' or user.role.role == 'Faculty' %}
         <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Issue Date</th>
-          <th>Due Date</th>
-        </tr>
-      </thead>
-      <tbody>  
-          {% for books in user_books_issued %}
-          <tr><td>{{books.book.title}}</td>
-              <td>{{books.issue_date}}</td>
-              <td>{{books.due_date}}</td>
-          </tr>
-          {% endfor %}
-        {% endif %}  
-      </tbody>
-    </table> 
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Return</th>
+            </tr>
+          </thead>
+          <tbody>  
+              {% for books in user_books_issued %}
+              <tr>
+              <td>{{books.book.title}}</td>
+                  <td>{{books.issue_date}}</td>
+                  <td>{{books.due_date}}</td>
+                  <td><button type="button" class="btn btn-danger return-btn">Return</button></td>
+              </tr>
+              {% endfor %}  
+          </tbody>
+        </table> 
+      {% endif %}
+    </div>
   </div>
-</div>
+{% endblock %}
 
-
+{% block javascript %}
+<script src="{% static 'js/book_return.js'%}"></script>
 {% endblock %}

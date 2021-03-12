@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
 import smtplib
 from django.db.models import Q
+import datetime
 # Create your views here.
 
 
@@ -323,7 +324,10 @@ class BookIssue(View):
         book = Book.objects.get(id=book_pk)
         
         # getting all the records from BookRecord for requested book
-        all_book_records = BookRecord.objects.filter(book__title__iexact=book.title)
+        all_book_records = BookRecord.objects.filter(
+            Q(book__title__iexact=book.title) &
+            Q(return_date=None)
+            )
         
         # check if current_user with requested Book is already in BookRecords or Not
         # or check if book title is occupied by any other user 
@@ -350,6 +354,27 @@ class BookIssue(View):
 
         return JsonResponse({'status':1,'book':book.title,'user':user.username,'avail':book.available_copy})
 
+
+class BookReturn(View):
+    def post(self,request):
+        title = request.POST.get('book')
+        username = request.POST.get('user')
+        book = Book.objects.get(title=title)
+        # getting a particular record from BookRecord to set its return_date
+        returned_book = BookRecord.objects.get(
+            Q(book__title__iexact=title)&
+            Q(return_date=None)&
+            Q(user__username=username)
+            )
+
+        today = datetime.date.today()
+
+        returned_book.return_date = today
+        returned_book.save()
+        book.available_copy += 1
+        book.save()
+
+        return JsonResponse({'book':title,'user':username})
 
 class BookRecords(View):
 
