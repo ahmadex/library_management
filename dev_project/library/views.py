@@ -381,3 +381,22 @@ class BookRecords(View):
     def get(self, request):
         book = BookRecord.objects.all()[::-1]
         return render(request,'library/book_records.html',{'books':book})
+
+
+class AvailableBooks(View):
+
+    def get(self, request, pk):
+        user = User.objects.get(id=pk)
+        except_books = []
+        
+        issue_book_records = BookRecord.objects.filter(
+            Q(user__username__iexact=user.username) &
+            Q(return_date=None)
+            )
+        
+        for book in issue_book_records:
+            except_books.append(book) 
+
+        avail_books = Book.objects.exclude(title__in=except_books)
+
+        return render(request,'library/avail_books.html',{'avail_books':avail_books})

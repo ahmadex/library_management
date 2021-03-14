@@ -18,11 +18,10 @@
 
                 {% if user.is_staff %}
                     <a href="{% url 'library:book_update' book.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
-                    <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
-
+                    
                     <a id='delete' href="{% url 'library:book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>&nbsp;
-                    <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
-                {% else %}
+                    
+                {% elif user.role.role == 'Student' or user.role.role == 'Faculty' %}
                     <a id='issue-btn' href="#" class="btn btn-outline btn-primary btn-lg">Issue</a>
                 {% endif %}
                 </div>

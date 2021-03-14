@@ -1,0 +1,32 @@
+{% extends 'base.html'%}
+{% load static %}
+    
+{% block content %}
+    <div class="container">
+        <div class="row" style='margin-top:120px;'>
+            {% for book in avail_books %}
+                <div class="col-md-3">
+                    <div class="ibox">
+                        <div class="ibox-content product-box">
+                            {% if book.cover_page%}
+                            <div class="card-img-top">
+                                <img src="{{book.cover_page.url}}"class="d-block ui-w-100">
+                            </div>
+                            {% endif %}
+                            <div class="product-desc">
+                                <span class="product-price">
+                                    Available
+                                </span>
+                                <small class="text-muted">{{book.category}}</small>
+                                <a href="{%url 'library:book_detail' book.id%}" class="product-name">{{book.title}}</a>
+                                <div class="small m-t-xs">
+                                    {{book.description|slice:40}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            {% endfor %}
+        </div> 
+    </div>
+{% endblock %}

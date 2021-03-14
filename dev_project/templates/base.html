@@ -52,6 +52,16 @@
                     <li class="nav-item">
                      <a class="nav-link" href="{% url 'library:book_record'%}">Book Issue History</a>
                      </li>
+                    
+                    {% elif user.role.role == 'Student' or user.role.role == 'Faculty' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'library:avail_books' request.user.id %}">Books For You</a>
+                    </li>
+
+                    {% elif user.role.role == 'Librarian'%}
+                        <li class="nav-item">
+                        <a class="nav-link" href="{% url 'library:book_record'%}">Book Issue History</a>
+                        </li>
                     {% endif %}
                     
                 </ul>
