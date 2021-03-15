@@ -15,7 +15,11 @@
                             {% endif %}
                             <div class="product-desc">
                                 <span class="product-price">
+                                {% if book.available_copy < 1 %}
+                                    Unavailable
+                                {% else %}
                                     Available
+                                {% endif %}
                                 </span>
                                 <small class="text-muted">{{book.category}}</small>
                                 <a href="{%url 'library:book_detail' book.id%}" class="product-name">{{book.title}}</a>

@@ -14,12 +14,13 @@ $(function(){
             },
             success:function(data){
                 console.log(data);
-            
-               
+                row.setAttribute('id','dlt');
+                let x = $('#dlt')
+                x.fadeOut(2000);
+                row.setAttribute('id','dlt1');
+                // x.remove();
+                          
             }
         });
-
-    
     });
-
 });

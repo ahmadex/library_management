@@ -21,15 +21,17 @@
   
 <tbody>
     {% for book in books %}
-
     <tr>
       <td>{{book.id}}</td>
       <td>{{book.book.title}}</td>
       <td>{{book.user}}</td>
       <td>{{book.issue_date}}</td>
       <td>{{book.due_date}}</td>
+      {% if book.return_date == None %}
+      <td>--------</td>
+      {% else %}
       <td>{{book.return_date}}</td>
-     
+      {% endif %}
     </tr>
 
     {% endfor %}

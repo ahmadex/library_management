@@ -397,6 +397,9 @@ class AvailableBooks(View):
         for book in issue_book_records:
             except_books.append(book) 
 
-        avail_books = Book.objects.exclude(title__in=except_books)
+        avail_books = Book.objects.exclude(
+            Q(title__in=except_books) |
+            Q(available_copy__lte=0)
+            )
 
         return render(request,'library/avail_books.html',{'avail_books':avail_books})
