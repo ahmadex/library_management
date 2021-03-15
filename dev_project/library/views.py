@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views import generic
 from django.http import HttpResponse, JsonResponse
-from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category,BookRecord
-from .forms import StudentForm,UserForm,FacultyForm,LibrarianForm, LoginForm, BookForm, UserUpdateForm
+from library.models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category,BookRecord
+from library.forms import StudentForm,UserForm,FacultyForm,LibrarianForm, LoginForm, BookForm, UserUpdateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator

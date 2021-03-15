@@ -1,5 +1,5 @@
 from phonenumber_field.formfields import PhoneNumberField
-from .models import Student,Faculty,Librarian,Book,BookRecord,Admin,Role,User,Department,Category
+from library.models import Student,Faculty,Librarian,Book,BookRecord,Admin,Role,User,Department,Category
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
