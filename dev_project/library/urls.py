@@ -27,6 +27,8 @@ urlpatterns = [
     path('book_return/',views.BookReturn.as_view(), name='book_return'),
     path('book_record/',views.BookRecords.as_view(), name='book_record'),
     path('avail_books/<str:pk>',views.AvailableBooks.as_view(), name='avail_books'),
+    path('search_title/',views.SearchTitle.as_view(), name='search_title'),
+
 
 
 

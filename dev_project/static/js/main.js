@@ -1,16 +1,18 @@
-let pass1 = document.getElementById('id_password1')
-let pass2 = document.getElementById('id_password2')
-let phone = document.getElementsByName('phone_no')[0]
-pass2.addEventListener('blur',function(){
-
-    if(pass1.value != pass2.value){
-        alert('Two Passwords did not Match')
-    }
+// $(function(){
     
-});
-
-// phone.addEventListener('input',function(){
-//     if(phone.value != typeof ''){
-//         alert('Phone no does not support Character')
-//     }
-// });
+//     $('#search').on('change',function(){
+        
+//         $.ajax({
+//             url:'/library/search_title/',
+//             method:'GET',
+//             data:{
+//                 title:$('#search').val(),
+//                 // csrfmiddlewaretoken:$('#csr').val()
+//             },
+//             success:function(data){
+//                 console.log(data);
+//             }
+            
+//         })
+//     })
+// })

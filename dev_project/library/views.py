@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.urls import reverse_lazy
 from django.views import View
 from django.views import generic
@@ -41,11 +41,9 @@ def send_email(request):
 
 
 
-class HomeView(View):
+class HomeView(LoginRequiredMixin,View):
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    login_url = '/library/user_login/'
 
     def get(self, request):
         book = Book.objects.all()[::-1]
@@ -65,6 +63,14 @@ class Signin(View):
             })
    
     def post(self, request):
+        
+        # check for username exists or not
+        username = request.POST.get('uname')
+        data = {
+            'taken': User.objects.filter(username__iexact=username).exists()
+        }
+        if data['taken']:
+            return JsonResponse(data)
 
         user_role = {
             '1': StudentForm(request.POST),
@@ -139,6 +145,15 @@ class AddLibrarian(View):
         })
     
     def post(self, request):
+
+        # check for username already exist or not
+        username = request.POST.get('uname')
+        data = {
+            'taken': User.objects.filter(username__iexact=username).exists()
+        }
+        if data['taken']:
+            return JsonResponse(data)
+
         # userform = StaffForm(request.POST, request.FILES)
         userform = UserForm(request.POST, request.FILES)
         librarianform = LibrarianForm(request.POST)
@@ -376,6 +391,7 @@ class BookReturn(View):
 
         return JsonResponse({'book':title,'user':username})
 
+
 class BookRecords(View):
 
     def get(self, request):
@@ -403,3 +419,13 @@ class AvailableBooks(View):
             )
 
         return render(request,'library/avail_books.html',{'avail_books':avail_books})
+
+
+class SearchTitle(LoginRequiredMixin,View):
+    login_url = '/library/user_login/'
+
+    def get(self, request):
+        title = request.GET.get('query')
+        book = Book.objects.filter(title__icontains=title)
+        print(book)
+        return render(request,'library/search.html',{'books':book})

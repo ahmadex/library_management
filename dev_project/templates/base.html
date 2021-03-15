@@ -65,8 +65,8 @@
                     {% endif %}
                     
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search Title" aria-label="Search">
+                <form class="d-flex" method='get' action='/library/search_title/'>
+                    <input id='search' class="form-control me-2" type="search" placeholder="Search Title" name='query' aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
