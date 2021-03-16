@@ -9,10 +9,12 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core import serializers
 from dev_project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 import smtplib
 from django.db.models import Q
 import datetime
@@ -403,12 +405,11 @@ class BookReturn(View):
         return JsonResponse({'book':title,'user':username})
 
 
-class BookRecords(generic.ListView):
+class BookRecords(View):
 
-    model = BookRecord
-    template_name = 'library/book_records.html'
-    context_object_name = 'books'
-    queryset = BookRecord.objects.all()[::-1]
+    def get(self,request):
+        books = BookRecord.objects.all()[::-1]
+        return render(request,'library/book_records.html',{'books':books})
 
 
 class AvailableBooks(View):
@@ -431,6 +432,28 @@ class AvailableBooks(View):
             )
 
         return render(request,'library/avail_books.html',{'avail_books':avail_books})
+
+
+class RecordSearch(LoginRequiredMixin,View):
+    login_url = '/library/user_login/'
+
+    def get(self, request):
+        title = request.GET.get('title')
+        book_record = BookRecord.objects.filter(book__title__icontains=title)
+        search_record = []
+
+        for record in book_record:
+            details = {
+                'id':record.id,
+                'book':record.book.title,
+                'user':record.user.username,
+                'isuue_date':record.issue_date,
+                'due_date':record.due_date,
+                'return_date':record.return_date
+            }
+            search_record.append(details)
+        
+        return JsonResponse({'records':search_record})
 
 
 class SearchTitle(LoginRequiredMixin,View):

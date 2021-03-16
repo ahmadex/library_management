@@ -4,10 +4,13 @@
 {% block content %}
     <br>
 
-
 <div class="container" style='margin-top:100px;'>
+  <input id='record' class="form-control me-2" type="search" placeholder="Search Title" name='query' aria-label="Search">
+</div>
+
+<div id='contain' class="container" style='margin-top:20px;'>
     
-<table class="table student-list">
+<table id='old-table' class="table student-list">
   <thead class="thead-light">
     <tr>
       <th scope="col">ID</th>
@@ -38,3 +41,9 @@
   </tbody>
 </table>
 {% endblock %}
+
+{% block javascript %}
+
+<script src="{% static 'js/record_search.js' %}"></script>
+
+{% endblock javascript %}
