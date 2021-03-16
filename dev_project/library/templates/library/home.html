@@ -16,7 +16,7 @@
                             <div class="product-desc">
                                 <span class="product-price">
                                 {% if book.available_copy < 1 %}
-                                    Unavailable
+                                   Unavailable
                                 {% else %}
                                     Available
                                 {% endif %}
@@ -33,4 +33,39 @@
             {% endfor %}
         </div> 
     </div>
+
+<div class='container'>
+{% if books.has_other_pages %}
+        <ul style='padding-left:40%' class="pagination">
+            {% if books.has_previous %}
+            <li style='margin-left:10px;'><a href="?page={{ books.previous_page_number }}"><button type="button" class="btn btn-primary">
+            &laquo;</button> </a></li>
+            {% else %}
+            <li class="disabled">
+            
+            <button type="button" class="btn btn-danger">
+            &laquo;</button></li>
+            {% endif %}
+            {% for i in books.paginator.page_range %}
+            {% if books.number == i %}
+                <li style='margin-left:10px;' class="active">
+                <button type="button" class="btn btn-primary">
+                <span>{{ i }} <span class="sr-only"></span></span></button>
+                </li>
+            {% else %}
+                <li style='margin-left:10px;'><a href="?page={{ i }}">
+                <button type="button" class="btn btn-primary">{{ i }}</button></a></li>
+            {% endif %}
+            {% endfor %}
+            {% if books.has_next %}
+            <li style='margin-left:10px;'><a href="?page={{ books.next_page_number }}">
+            <button type="button" class="btn btn-primary">&raquo;</button></a></li>
+            {% else %}
+            <li style='margin-left:10px;' class="disabled"><button type="button" class="btn btn-danger">
+            &raquo;</button></li></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</div>
+    
 {% endblock %}

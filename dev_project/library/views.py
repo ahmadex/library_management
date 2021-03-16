@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from dev_project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
 import smtplib
 from django.db.models import Q
@@ -47,7 +48,17 @@ class HomeView(LoginRequiredMixin,View):
 
     def get(self, request):
         book = Book.objects.all()[::-1]
-        return render(request,'library/home.html',{'books':book})
+
+        page = request.GET.get('page',1)
+        paginator = Paginator(book, 8)
+        try:
+            books = paginator.page(page)
+        except PageNotAnInteger:
+            books = paginator.page(1)
+        except EmptyPage:
+            books = paginator.page(paginator.num_pages)
+
+        return render(request,'library/home.html',{'books':books})
 
 class Signin(View):
 
@@ -392,11 +403,12 @@ class BookReturn(View):
         return JsonResponse({'book':title,'user':username})
 
 
-class BookRecords(View):
+class BookRecords(generic.ListView):
 
-    def get(self, request):
-        book = BookRecord.objects.all()[::-1]
-        return render(request,'library/book_records.html',{'books':book})
+    model = BookRecord
+    template_name = 'library/book_records.html'
+    context_object_name = 'books'
+    queryset = BookRecord.objects.all()[::-1]
 
 
 class AvailableBooks(View):
