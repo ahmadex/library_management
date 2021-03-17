@@ -80,7 +80,6 @@ class Signin(View):
             # login user
             login(request, user)
             return redirect('library:profile', pk=user.id)
-
         else:
             return render(request,'library/signin.html',{'userform': userform})
 
@@ -125,7 +124,8 @@ class UserDelete(LoginRequiredMixin, View):
 
 class AddLibrarian(View):
     def get(self, request):
-        userform = StaffForm()
+        # userform = StaffForm()
+        userform = UserForm()
         librarianform = LibrarianForm()
 
         return render(request, 'library/librarian_signin.html',{
@@ -134,7 +134,8 @@ class AddLibrarian(View):
         })
     
     def post(self, request):
-        userform = StaffForm(request.POST, request.FILES)
+        # userform = StaffForm(request.POST, request.FILES)
+        userform = UserForm(request.POST, request.FILES)
         librarianform = LibrarianForm(request.POST)
 
         if userform.is_valid() and librarianform.is_valid():

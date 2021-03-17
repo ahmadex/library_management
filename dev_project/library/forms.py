@@ -32,24 +32,12 @@ class FacultyForm(forms.ModelForm):
         exclude = ('user',)
 
 
-class StaffForm(UserCreationForm):
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'First Name'}))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Last Name'}))
-    phone_no = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Contact'}))
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password1'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password'}))
-
-    class Meta:
-        model = User
-        fields = ['first_name','last_name','phone_no','username','password1','password2','profile_pic',]
-
-
 class LibrarianForm(forms.ModelForm):
 
     class Meta:
         model = Librarian
         exclude = ('user',)
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}))
