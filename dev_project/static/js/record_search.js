@@ -1,7 +1,6 @@
 $(function(){
     $('#record').on('input',function(){
-      let record = $('#record').val();
-  
+        let record = $('#record').val();    
       if(record != ""){
             $.ajax({
 
@@ -61,8 +60,11 @@ $(function(){
         }
         else{
             // $('#new-table').remove();
-            // console.log(oldHtml);
-            // $('#contain').html(oldHtml);
+            // let new_th = oldHtml.outerHTML;
+            // $.each(oldHtml, function(k,v){
+            //     console.log(k,v);
+            // });
+            // $('#contain').html(new_th);
         }
       
     });
