@@ -1,6 +1,7 @@
 $(function(){
+    let oldHtml = document.getElementById('old-table');    
     $('#record').on('input',function(){
-        let record = $('#record').val();    
+        let record = $('#record').val();
       if(record != ""){
             $.ajax({
 
@@ -59,12 +60,9 @@ $(function(){
             });
         }
         else{
-            // $('#new-table').remove();
-            // let new_th = oldHtml.outerHTML;
-            // $.each(oldHtml, function(k,v){
-            //     console.log(k,v);
-            // });
-            // $('#contain').html(new_th);
+            $('#new-table').remove();
+            let new_th = oldHtml.outerHTML;
+            $('#contain').html(new_th);
         }
       
     });

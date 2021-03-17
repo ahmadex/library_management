@@ -410,6 +410,7 @@ class BookRecords(View):
 
     def get(self,request):
         books = BookRecord.objects.all()[::-1]
+        print(len(books))
         return render(request,'library/book_records.html',{'books':books})
 
 
