@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'library',
+    'library.apps.LibraryConfig',
     'phonenumber_field',
     
 

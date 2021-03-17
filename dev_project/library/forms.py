@@ -12,10 +12,11 @@ class UserForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm Password'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder':'Email'}))
 
     class Meta:
         model = User
-        fields = ('role','department','first_name','last_name','phone_no','username','password1','password2','profile_pic')
+        fields = ('role','department','first_name','last_name','email','phone_no','username','password1','password2','profile_pic')
 
 
 class StudentForm(forms.ModelForm):

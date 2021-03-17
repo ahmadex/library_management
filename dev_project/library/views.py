@@ -21,28 +21,6 @@ import datetime
 
 
 
-def send_email(request):
-
-    if request.method == 'POST':
-        reciver = request.POST.get('email')
-        print(type(reciver))
-        subject = 'Mail Check'
-        message = 'Mail Eception can not be trace'
-        recepient = str(reciver)
-        
-        try:
-            send_mail(subject, 
-                message, EMAIL_HOST_USER, [recepient], fail_silently = False)
-        except Exception as ex:
-            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-            message = template.format(type(ex).__name__, ex.args)
-            print(message)
-
-        return HttpResponse('Mail Sent Sucessfully')
-
-    return render(request,'library/email.html')
-
-
 class HomeView(LoginRequiredMixin,View):
 
     login_url = '/library/user_login/'
@@ -87,8 +65,7 @@ class Signin(View):
         userform = UserForm(request.POST, request.FILES)
 
         if userform.is_valid() and usertype.is_valid():
-            user = userform.save(commit=False)
-            user.save()
+            user = userform.save()
             new_user = usertype.save(commit=False)
             new_user.user = user
             new_user.save()
@@ -156,7 +133,7 @@ class AddLibrarian(View):
         librarianform = LibrarianForm(request.POST)
 
         if userform.is_valid() and librarianform.is_valid():
-            user = userform.save(commit=False)
+            user = userform.save()
            
             new_role = Role.objects.get(role='Librarian')
             user.role = new_role
