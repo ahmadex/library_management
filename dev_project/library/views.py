@@ -24,20 +24,21 @@ import datetime
 
 def send_email(request):
 
-    SMTP_HOST = "smtp.gmail.com"
-    SMTP_PORT = 587
     if request.method == 'POST':
         reciver = request.POST.get('email')
-        subject = 'Stipend'
-        message = 'You will be given stipend shortly'
-        recipent = str(reciver)
+        print(type(reciver))
+        subject = 'Mail Check'
+        message = 'Mail Eception can not be trace'
+        recepient = str(reciver)
+        
+        try:
+            send_mail(subject, 
+                message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            print(message)
 
-        with smtplib.SMTP(host=SMTP_HOST, port=SMTP_PORT) as server:
-            server.starttls()
-            server.login(EMAIL_HOST_USER,'Shazam@1998')
-            server.sendmail(EMAIL_HOST_USER, reciver, message)
-
-        # send_mail(subject,message,EMAIL_HOST_USER,[reciver],fail_silently=False)
         return HttpResponse('Mail Sent Sucessfully')
 
     return render(request,'library/email.html')
