@@ -14,7 +14,6 @@ from dev_project.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
-
 import smtplib
 from django.db.models import Q
 import datetime
@@ -44,7 +43,6 @@ def send_email(request):
     return render(request,'library/email.html')
 
 
-
 class HomeView(LoginRequiredMixin,View):
 
     login_url = '/library/user_login/'
@@ -63,6 +61,7 @@ class HomeView(LoginRequiredMixin,View):
 
         return render(request,'library/home.html',{'books':books})
 
+
 class Signin(View):
 
     def get(self, request):
@@ -78,14 +77,6 @@ class Signin(View):
    
     def post(self, request):
         
-        # check for username exists or not
-        username = request.POST.get('uname')
-        data = {
-            'taken': User.objects.filter(username__iexact=username).exists()
-        }
-        if data['taken']:
-            return JsonResponse(data)
-
         user_role = {
             '1': StudentForm(request.POST),
             '2': FacultyForm(request.POST)
@@ -159,14 +150,6 @@ class AddLibrarian(View):
         })
     
     def post(self, request):
-
-        # check for username already exist or not
-        username = request.POST.get('uname')
-        data = {
-            'taken': User.objects.filter(username__iexact=username).exists()
-        }
-        if data['taken']:
-            return JsonResponse(data)
 
         # userform = StaffForm(request.POST, request.FILES)
         userform = UserForm(request.POST, request.FILES)
@@ -456,6 +439,18 @@ class RecordSearch(LoginRequiredMixin,View):
             search_record.append(details)
         
         return JsonResponse({'records':search_record})
+
+
+class Usernamevalid(View):
+
+    # check for username already exist or not
+    def post(self,request):
+        username = request.POST.get('uname')
+        data = {
+            'taken': User.objects.filter(username__iexact=username).exists()
+        }
+        if data['taken']:
+            return JsonResponse(data)
 
 
 class SearchTitle(LoginRequiredMixin,View):

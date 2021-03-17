@@ -16,7 +16,7 @@ $(function(){
         
         $.ajax({
 
-            url:'/library/add_librarian/',
+            url:'/library/username_valid/',
             method:'POST',
             data:{
                 uname:$('#id_username').val(),

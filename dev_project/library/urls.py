@@ -29,6 +29,8 @@ urlpatterns = [
     path('avail_books/<str:pk>',views.AvailableBooks.as_view(), name='avail_books'),
     path('record_search/',views.RecordSearch.as_view(), name='record_search'),
     path('search_title/',views.SearchTitle.as_view(), name='search_title'),
+    path('username_valid/',views.Usernamevalid.as_view(), name='username_valid'),
+
 
 
 
