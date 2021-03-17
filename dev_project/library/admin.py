@@ -33,4 +33,6 @@ admin.site.index_title = "Welcome to Library Management System"
 
 class UserAdmin(admin.ModelAdmin):
   list_display = ('first_name', 'last_name', 'username', 'phone_no', 'profile_pic', 'role', 'department')
+
+  
 admin.site.register(models.User, UserAdmin)

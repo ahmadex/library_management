@@ -40,12 +40,10 @@ def send_email(request):
 
 
 
-class HomeView(View):
+class HomeView(LoginRequiredMixin, View):
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
+    login_url = '/library/user_login/'
+    
     def get(self, request):
         book = Book.objects.all()[::-1]
         return render(request,'library/home.html',{'books':book})
@@ -75,8 +73,7 @@ class Signin(View):
         userform = UserForm(request.POST, request.FILES)
 
         if userform.is_valid() and usertype.is_valid():
-            user = userform.save(commit=False)
-            user.save()
+            user = userform.save()
             new_user = usertype.save(commit=False)
             new_user.user = user
             new_user.save()
@@ -141,7 +138,7 @@ class AddLibrarian(View):
         librarianform = LibrarianForm(request.POST)
 
         if userform.is_valid() and librarianform.is_valid():
-            user = userform.save(commit=False)
+            user = userform.save()
            
             new_role = Role.objects.get(role='Librarian')
             user.role = new_role
@@ -214,22 +211,22 @@ class AddBookView(LoginRequiredMixin, View):
     login_url = '/library/user_login/'
 
     def get(self, request, pk=None):
-        bookform = BookForm()
+        book_form = BookForm()
         return render(request,'library/add_book.html',{
-            'bookform': bookform,
+            'bookform': book_form,
         })
         
     def post(self, request):
-        bookform = BookForm(request.POST, request.FILES)
-        if bookform.is_valid():
-            book = bookform.save(commit=False)
-            # category = bookform.cleaned_data['category']
+        book_form = BookForm(request.POST, request.FILES)
+        if book_form.is_valid():
+            book = book_form.save(commit=False)
+            # category = book_form.cleaned_data['category']
             # new_category = Category.objects.get(category=category)
             # book.category = new_category
             book.save()
             return redirect('library:book_detail', pk=book.id)
         else:
-            return render(request, 'library/add_book.html',{'bookform': bookform})
+            return render(request, 'library/add_book.html',{'bookform': book_form})
 
 
 class BookDetailView(LoginRequiredMixin,View):
@@ -245,19 +242,19 @@ class BookUpdateView(LoginRequiredMixin, View):
     
     def get(self, request, pk):
         book = Book.objects.get(id=pk)
-        bookform = BookForm(instance=book)
-        return render(request, 'library/book_update.html',{'bookform': bookform,'books':book})
+        book_form = BookForm(instance=book)
+        return render(request, 'library/book_update.html',{'bookform': book_form,'books':book})
     
     def post(self, request, pk):
         book = Book.objects.get(id=pk)
-        bookform = BookForm(request.POST, request.FILES, instance=book)
+        book_form = BookForm(request.POST, request.FILES, instance=book)
 
-        if bookform.is_valid():
-            book = bookform.save(commit=False)
+        if book_form.is_valid():
+            book = book_form.save(commit=False)
             book.save()
             return redirect('library:book_detail',pk=book.id)
         else:
-            return render(request,'library/book_update.html',{'bookform':bookform})
+            return render(request,'library/book_update.html',{'bookform':book_form})
 
 
 class DeleteBookView(LoginRequiredMixin, View):
