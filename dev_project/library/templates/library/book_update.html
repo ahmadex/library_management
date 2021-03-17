@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags%}
+{% load static %}
+
+
+  
+    {% block content %}
+        <div class='heading'style='margin-top:100px;'>
+            <center><h1 id='ab'>Book Update</h1></center>
+        </div>
+        <input type='hidden' id='book_id' value={{books.id}}>
+        <input type='hidden' id='csr' value={{csrf_token}}>
+
+        <div class='jumbotron container' style='width:60%;'>
+            <form id='bookform' class='form1' name='signin' method='post' enctype='multipart/form-data'>
+                {% csrf_token %}
+                {% comment %} {{bookform|crispy}} {% endcomment %}
+                {{bookform.title|as_crispy_field}}
+                {{bookform.category|as_crispy_field}}
+                {{bookform.author|as_crispy_field}}
+                {{bookform.description|as_crispy_field}}
+                {{bookform.no_of_copy|as_crispy_field}}
+                {{bookform.available_copy|as_crispy_field}}
+                {{bookform.cover_page|as_crispy_field}}
+                <br>
+                <input class='btn btn-primary' type='submit',value='Signin', name='submit'>
+            </form>
+        </div>
+
+        
+{% endblock %}
+
+{% block javascript %} 
+<script src="{% static 'js/copy_incrmt.js'%}">
+    </script>
+{% endblock %}

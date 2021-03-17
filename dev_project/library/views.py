@@ -4,7 +4,7 @@ from django.views import View
 from django.views import generic
 from django.http import HttpResponse, JsonResponse
 from .models import Student,Faculty,User,Librarian,Admin,Department,Role,Book,Category
-from .forms import StudentForm,UserForm,FacultyForm,LibrarianForm, LoginForm, BookForm, UserUpdateForm
+from .forms import StudentForm,UserForm,FacultyForm,StaffForm,LibrarianForm, LoginForm, BookForm,UserUpdateForm
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -19,32 +19,31 @@ import smtplib
 
 def send_email(request):
 
-    SMTP_HOST = "smtp.gmail.com"
-    SMTP_PORT = 587
     if request.method == 'POST':
         reciver = request.POST.get('email')
-        subject = 'Stipend'
-        message = 'You will be given stipend shortly'
-        recipent = str(reciver)
+        print(type(reciver))
+        subject = 'Mail Check'
+        message = 'Mail Eception can not be trace'
+        recepient = str(reciver)
+        
+        try:
+            send_mail(subject, 
+                message, EMAIL_HOST_USER, [recepient], fail_silently = False)
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            print(message)
 
-        with smtplib.SMTP(host=SMTP_HOST, port=SMTP_PORT) as server:
-            server.starttls()
-            server.login(EMAIL_HOST_USER,'Shazam@1998')
-            server.sendmail(EMAIL_HOST_USER, reciver, message)
-
-        # send_mail(subject,message,EMAIL_HOST_USER,[reciver],fail_silently=False)
         return HttpResponse('Mail Sent Sucessfully')
 
     return render(request,'library/email.html')
 
 
 
-class HomeView(View):
+class HomeView(LoginRequiredMixin, View):
 
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
+    login_url = '/library/user_login/'
+    
     def get(self, request):
         book = Book.objects.all()[::-1]
         return render(request,'library/home.html',{'books':book})
@@ -68,21 +67,19 @@ class Signin(View):
             '1': StudentForm(request.POST),
             '2': FacultyForm(request.POST)
             }
-    
+        
         temp_role = request.POST.get('role')
         usertype = user_role.get(temp_role)
         userform = UserForm(request.POST, request.FILES)
 
         if userform.is_valid() and usertype.is_valid():
-            user = userform.save(commit=False)
-            user.save()
+            user = userform.save()
             new_user = usertype.save(commit=False)
             new_user.user = user
             new_user.save()
             # login user
             login(request, user)
             return redirect('library:profile', pk=user.id)
-
         else:
             return render(request,'library/signin.html',{'userform': userform})
 
@@ -142,7 +139,7 @@ class AddLibrarian(View):
         librarianform = LibrarianForm(request.POST)
 
         if userform.is_valid() and librarianform.is_valid():
-            user = userform.save(commit=False)
+            user = userform.save()
            
             new_role = Role.objects.get(role='Librarian')
             user.role = new_role
@@ -215,22 +212,22 @@ class AddBookView(LoginRequiredMixin, View):
     login_url = '/library/user_login/'
 
     def get(self, request, pk=None):
-        bookform = BookForm()
+        book_form = BookForm()
         return render(request,'library/add_book.html',{
-            'bookform': bookform,
+            'bookform': book_form,
         })
         
     def post(self, request):
-        bookform = BookForm(request.POST, request.FILES)
-        if bookform.is_valid():
-            book = bookform.save(commit=False)
-            # category = bookform.cleaned_data['category']
+        book_form = BookForm(request.POST, request.FILES)
+        if book_form.is_valid():
+            book = book_form.save(commit=False)
+            # category = book_form.cleaned_data['category']
             # new_category = Category.objects.get(category=category)
             # book.category = new_category
             book.save()
             return redirect('library:book_detail', pk=book.id)
         else:
-            return render(request, 'library/add_book.html',{'bookform': bookform})
+            return render(request, 'library/add_book.html',{'bookform': book_form})
 
 
 class BookDetailView(LoginRequiredMixin,View):
@@ -246,19 +243,19 @@ class BookUpdateView(LoginRequiredMixin, View):
     
     def get(self, request, pk):
         book = Book.objects.get(id=pk)
-        bookform = BookForm(instance=book)
-        return render(request, 'library/add_book.html',{'bookform': bookform})
+        book_form = BookForm(instance=book)
+        return render(request, 'library/book_update.html',{'bookform': book_form,'books':book})
     
     def post(self, request, pk):
         book = Book.objects.get(id=pk)
-        bookform = BookForm(request.POST, request.FILES, instance=book)
+        book_form = BookForm(request.POST, request.FILES, instance=book)
 
-        if bookform.is_valid():
-            book = bookform.save(commit=False)
+        if book_form.is_valid():
+            book = book_form.save(commit=False)
             book.save()
             return redirect('library:book_detail',pk=book.id)
         else:
-            return render(request,'library/add_book.html',{'bookform':bookform})
+            return render(request,'library/book_update.html',{'bookform':book_form})
 
 
 class DeleteBookView(LoginRequiredMixin, View):
@@ -307,3 +304,24 @@ class BookList(LoginRequiredMixin,View):
     def get(self, request):
         book = Book.objects.all().order_by('id')
         return render(request,'library/book_list.html',{'books':book})
+
+
+class CopyIncrmt(View):
+
+    def post(self,request):
+        pk = request.POST.get('id') 
+        sign = request.POST.get('sign')       
+        book = Book.objects.get(id=pk)
+
+        if sign == 'plus':
+            book.no_of_copy += 1
+            book.available_copy += 1
+        else:
+            book.no_of_copy -= 1
+            book.available_copy -= 1
+        
+        book.save()
+        return JsonResponse({'status':1, 'book_copy':book.no_of_copy,'avail':book.available_copy})
+
+
+    

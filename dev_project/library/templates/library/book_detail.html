@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
-
 {% block content %}
+{% load static %}
 <h4 style='margin-top:100px;'>Welcom Student</h4>
 <div class='row'>
     <div class='col-md-2'>
         <div class="media align-items-center py-3 mb-3">
             <img src="{{book.cover_page.url}}" class="" style='width:200px;'>
             <div class="media-body ml-4">
-            <div class="text-muted mb-2">ID: {{book.id}}</div>
+            <div class="text-muted mb-2">ID:<span id='book_id'>{{book.id}}</sapn></div>
             {% if user.is_staff %}
                 <a href="{% url 'library:book_update' book.id %}" class="btn btn-primary btn-sm">Edit</a>&nbsp;
                 <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
 
                 <a id='delete' href="{% url 'library:book_delete' book.id %}" class="btn btn-danger btn-sm">Delete</a>&nbsp;
                 <a href="javascript:void(0)" class="btn btn-default btn-sm icon-btn"><i class="fa fa-mail"></i></a>
-            {% else %}
-                <a href="#" class="btn btn-outline btn-primary btn-lg">Issue</a>
+            {% elif user.role.role == 'Student' %}
+                <a href="#" class="btn btn-xs btn-outline btn-primary">Issue</a>
             {% endif %}
             </div>
         </div>
@@ -39,11 +39,20 @@
                 </tr>
                 <tr>
                     <td>Available Copies:</td>
-                    <td>{{book.available_copy}}</td>
+                    <td><span id='avail'>{{book.available_copy}}</span></td>
                 </tr>
                 <tr>
                     <td>No of Copies</td>
-                    <td><span class="badge badge-outline-success"></span>{{book.no_of_copy}}</td>
+                    <td> 
+                    <input id='copy' type='hidden' value={{csrf_token}}>
+                    {% if user.is_staff %}
+                    <a href="#" id='plus' class="btn btn-primary btn-sm">+</a>&nbsp;
+                    {% endif %}
+                    <span id='no_copy'>{{book.no_of_copy}}</span>&nbsp;
+                    {% if user.is_staff %}
+                    <a href="#" id='minus' class="btn btn-primary btn-sm">-</a>
+                    {% endif %}
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -66,5 +75,10 @@
     </div>
 </div>
 
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/copy.js'%}"></script>
 
 {% endblock %}
