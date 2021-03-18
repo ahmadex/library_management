@@ -17,6 +17,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import smtplib
 from django.db.models import Q
 import datetime
+
 # Create your views here.
 
 
@@ -180,7 +181,8 @@ class UserLogin(View):
         self.uname = request.POST.get('username')
         self.pasw = request.POST.get('password')
         self.user = authenticate(request, username=self.uname,password=self.pasw)
-        
+        import pdb
+        pdb.set_trace()
         if self.user:
             if self.user.is_active:
                 login(request, self.user)
