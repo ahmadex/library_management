@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 import datetime
+from library.managers import BookManager
 # Create your models here.
 
 class Department(models.Model):
@@ -91,6 +92,8 @@ class Book(models.Model):
   no_of_copy = models.BigIntegerField(default=None,blank=True, null=True)
   available_copy = models.BigIntegerField(default=None,blank=True, null=True)
   cover_page = models.ImageField(upload_to='book_cover',blank=True, null=True)
+  # objects = models.Manager()
+  # abc = BookManager()
   
   def __str__(self):
     return self.title
